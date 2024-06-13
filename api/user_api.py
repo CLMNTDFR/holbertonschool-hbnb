@@ -34,7 +34,8 @@ class Users(Resource):
         """Create a new user."""
         new_user_data = request.json
         user_id = data_manager.save_user(new_user_data)
-        response_message = {'message': 'User successfully created', 'user_id': user_id}
+        response_message = {'message': 'User successfully created', \
+                            'user_id': user_id}
         return response_message, 201
 
 @api.route('/<string:user_id>')

@@ -35,7 +35,8 @@ class Reviews(Resource):
         """Create a new review."""
         new_review_data = request.json
         review_id = data_manager.save_review(new_review_data)
-        response_message = {'message': 'Review successfully created', 'review_id': review_id}
+        response_message = {'message': 'Review successfully created', \
+                            'review_id': review_id}
         return response_message, 201
 
 @api.route('/<string:review_id>')

@@ -32,7 +32,8 @@ class Amenities(Resource):
         """Create a new amenity."""
         new_amenity_data = request.json
         amenity_id = data_manager.save_amenity(new_amenity_data)
-        response_message = {'message': 'Amenity successfully created', 'amenity_id': amenity_id}
+        response_message = {'message': 'Amenity successfully created', \
+                            'amenity_id': amenity_id}
         return response_message, 201
 
 @api.route('/<string:amenity_id>')

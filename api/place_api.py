@@ -23,7 +23,8 @@ place_model = api.model('Place', {
     'number_of_bathrooms': fields.Integer(description='Number of bathrooms'),
     'price_per_night': fields.Float(description='Price per night'),
     'max_guests': fields.Integer(description='Maximum number of guests'),
-    'amenity_ids': fields.List(fields.String, description='List of amenity IDs'),
+    'amenity_ids': fields.List(fields.String, description='List of \
+                               amenity IDs'),
     'created_at': fields.DateTime(description='Creation date'),
     'updated_at': fields.DateTime(description='Last update date')
 })
@@ -43,7 +44,8 @@ class Places(Resource):
         """Create a new place."""
         new_place_data = request.json
         place_id = data_manager.save_place(new_place_data)
-        response_message = {'message': 'Place successfully created', 'place_id': place_id}
+        response_message = {'message': 'Place successfully created', \
+                            'place_id': place_id}
         return response_message, 201
 
 @api.route('/<string:place_id>')

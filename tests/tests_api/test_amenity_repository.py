@@ -4,10 +4,10 @@ import os
 from datetime import datetime
 from unittest.mock import patch, MagicMock
 
-# Ajouter le répertoire parent de `tests_api` au `sys.path`
+# Add the parent directory of `tests_api` to `sys.path`
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
-# Ajouter le répertoire `tests_api` au `sys.path`
+# Add the `tests_api` directory to `sys.path`
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from model.amenity import Amenity

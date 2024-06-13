@@ -5,13 +5,14 @@ from flask import Flask, json
 from flask_restx import Api
 from unittest.mock import MagicMock
 
-# Ajouter le répertoire parent de `tests_api` au `sys.path`
+# Add the parent directory of `tests_api` to `sys.path`
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
-# Ajouter le répertoire `tests_api` au `sys.path`
+# Add the `tests_api` directory to `sys.path`
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-from api.amenity_api import api, data_manager  # Importing from amenity_api in the same directory
+# Importing from amenity_api in the same directory
+from api.amenity_api import api, data_manager
 
 class AmenityApiTestCase(unittest.TestCase):
     def setUp(self):
@@ -21,11 +22,15 @@ class AmenityApiTestCase(unittest.TestCase):
         self.client = self.app.test_client()
 
         # Mocking the DataManager methods
-        data_manager.get_all_amenities = MagicMock(return_value=[{'name': 'Pool'}, {'name': 'Gym'}])
+        data_manager.get_all_amenities = MagicMock(return_value=\
+                                                   [{'name': 'Pool'}, {'name': 'Gym'}])
         data_manager.save_amenity = MagicMock(return_value='amenity_123')
-        data_manager.get_amenity = MagicMock(side_effect=lambda id: {'name': 'Pool'} if id == 'amenity_123' else None)
-        data_manager.delete_amenity = MagicMock(side_effect=lambda id: id == 'amenity_123')
-        data_manager.update_amenity = MagicMock(side_effect=lambda id, data: id == 'amenity_123')
+        data_manager.get_amenity = MagicMock(side_effect=lambda id: \
+                                             {'name': 'Pool'} if id == 'amenity_123' else None)
+        data_manager.delete_amenity = MagicMock(side_effect=lambda id: id ==\
+                                                 'amenity_123')
+        data_manager.update_amenity = MagicMock(side_effect=lambda id, data: id == \
+                                                'amenity_123')
 
     def test_get_all_amenities(self):
         response = self.client.get('/amenities/')
@@ -36,7 +41,8 @@ class AmenityApiTestCase(unittest.TestCase):
         self.assertEqual(data[1]['name'], 'Gym')
 
     def test_create_amenity(self):
-        response = self.client.post('/amenities/', data=json.dumps({'name': 'Spa'}), content_type='application/json')
+        response = self.client.post('/amenities/', data=json.dumps\
+                                    ({'name': 'Spa'}), content_type='application/json')
         data = json.loads(response.data)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(data['message'], 'Amenity successfully created')
@@ -59,10 +65,14 @@ class AmenityApiTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_update_amenity(self):
-        response = self.client.put('/amenities/amenity_123', data=json.dumps({'name': 'Sauna'}), content_type='application/json')
+        response = self.client.put('/amenities/amenity_123', \
+                                   data=json.dumps({'name': 'Sauna'}), \
+                                    content_type='application/json')
         self.assertEqual(response.status_code, 204)
 
-        response = self.client.put('/amenities/nonexistent_id', data=json.dumps({'name': 'Sauna'}), content_type='application/json')
+        response = self.client.put('/amenities/nonexistent_id', \
+                                   data=json.dumps({'name': 'Sauna'}), \
+                                    content_type='application/json')
         self.assertEqual(response.status_code, 404)
 
 if __name__ == '__main__':
