@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import uuid
 from model.place import Place
 
+
 class TestPlace(unittest.TestCase):
 
     def setUp(self):
@@ -19,7 +20,20 @@ class TestPlace(unittest.TestCase):
         self.price_per_night = 100
         self.max_guests = 4
         self.amenity_ids = ["AMENITY1", "AMENITY2"]
-        self.place = Place(self.name, self.description, self.address, self.city_id, self.latitude, self.longitude, self.host_id, self.number_of_rooms, self.number_of_bathrooms, self.price_per_night, self.max_guests, self.amenity_ids)
+        self.place = Place(
+            self.name,
+            self.description,
+            self.address,
+            self.city_id,
+            self.latitude,
+            self.longitude,
+            self.host_id,
+            self.number_of_rooms,
+            self.number_of_bathrooms,
+            self.price_per_night,
+            self.max_guests,
+            self.amenity_ids,
+        )
 
     def test_place_creation(self):
         """Test if the place is created with correct attributes."""
@@ -31,7 +45,8 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(self.place.longitude, self.longitude)
         self.assertEqual(self.place.host_id, self.host_id)
         self.assertEqual(self.place.number_of_rooms, self.number_of_rooms)
-        self.assertEqual(self.place.number_of_bathrooms, self.number_of_bathrooms)
+        self.assertEqual(self.place.number_of_bathrooms,
+                         self.number_of_bathrooms)
         self.assertEqual(self.place.price_per_night, self.price_per_night)
         self.assertEqual(self.place.max_guests, self.max_guests)
         self.assertEqual(self.place.amenity_ids, self.amenity_ids)
@@ -53,7 +68,10 @@ class TestPlace(unittest.TestCase):
         """Test calculating the total price for a number of nights."""
         number_of_nights = 3
         expected_total_price = self.price_per_night * number_of_nights
-        self.assertEqual(self.place.calculate_total_price(number_of_nights), expected_total_price)
+        self.assertEqual(
+            self.place.calculate_total_price(number_of_nights),
+            expected_total_price
+        )
 
     def test_list_amenities(self):
         """Test listing amenities."""
@@ -99,34 +117,37 @@ class TestPlace(unittest.TestCase):
 
     def test_update_place_data(self):
         """Test updating place data."""
-        new_data = {
-            'name': 'New Name',
-            'number_of_rooms': 5
-        }
+        new_data = {"name": "New Name", "number_of_rooms": 5}
         self.place.update_place_data(new_data)
-        self.assertEqual(self.place.name, 'New Name')
+        self.assertEqual(self.place.name, "New Name")
         self.assertEqual(self.place.number_of_rooms, 5)
         self.assertLessEqual(self.place.updated_at, datetime.now())
 
     def test_to_dict(self):
         """Test the to_dict method."""
         place_dict = self.place.to_dict()
-        self.assertEqual(place_dict['place_id'], self.place.place_id)
-        self.assertEqual(place_dict['name'], self.place.name)
-        self.assertEqual(place_dict['description'], self.place.description)
-        self.assertEqual(place_dict['address'], self.place.address)
-        self.assertEqual(place_dict['city_id'], self.place.city_id)
-        self.assertEqual(place_dict['latitude'], self.place.latitude)
-        self.assertEqual(place_dict['longitude'], self.place.longitude)
-        self.assertEqual(place_dict['host_id'], self.place.host_id)
-        self.assertEqual(place_dict['number_of_rooms'], self.place.number_of_rooms)
-        self.assertEqual(place_dict['number_of_bathrooms'], self.place.number_of_bathrooms)
-        self.assertEqual(place_dict['price_per_night'], self.place.price_per_night)
-        self.assertEqual(place_dict['max_guests'], self.place.max_guests)
-        self.assertEqual(place_dict['amenity_ids'], self.place.amenity_ids)
-        self.assertEqual(place_dict['reviews'], self.place.reviews)
-        self.assertEqual(place_dict['created_at'], self.place.created_at)
-        self.assertEqual(place_dict['updated_at'], self.place.updated_at)
+        self.assertEqual(place_dict["place_id"], self.place.place_id)
+        self.assertEqual(place_dict["name"], self.place.name)
+        self.assertEqual(place_dict["description"], self.place.description)
+        self.assertEqual(place_dict["address"], self.place.address)
+        self.assertEqual(place_dict["city_id"], self.place.city_id)
+        self.assertEqual(place_dict["latitude"], self.place.latitude)
+        self.assertEqual(place_dict["longitude"], self.place.longitude)
+        self.assertEqual(place_dict["host_id"], self.place.host_id)
+        self.assertEqual(place_dict["number_of_rooms"],
+                         self.place.number_of_rooms)
+        self.assertEqual(
+            place_dict["number_of_bathrooms"],
+            self.place.number_of_bathrooms
+        )
+        self.assertEqual(place_dict["price_per_night"],
+                         self.place.price_per_night)
+        self.assertEqual(place_dict["max_guests"], self.place.max_guests)
+        self.assertEqual(place_dict["amenity_ids"], self.place.amenity_ids)
+        self.assertEqual(place_dict["reviews"], self.place.reviews)
+        self.assertEqual(place_dict["created_at"], self.place.created_at)
+        self.assertEqual(place_dict["updated_at"], self.place.updated_at)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

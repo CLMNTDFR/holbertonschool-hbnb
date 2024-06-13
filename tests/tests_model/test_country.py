@@ -1,6 +1,7 @@
 import unittest
 from model.country import Country
 
+
 class TestCountry(unittest.TestCase):
 
     def setUp(self):
@@ -16,8 +17,9 @@ class TestCountry(unittest.TestCase):
     def test_to_dict(self):
         """Test the to_dict method."""
         country_dict = self.country.to_dict()
-        self.assertEqual(country_dict['country_id'], self.country.country_id)
-        self.assertEqual(country_dict['name'], self.country.name)
+        self.assertEqual(country_dict["country_id"], self.country.country_id)
+        self.assertEqual(country_dict["name"], self.country.name)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

@@ -14,6 +14,7 @@ from model.amenity import Amenity
 from model.country import Country
 from model.city import City
 
+
 class DataManager:
     def __init__(self):
         self.place_repository = PlaceRepository()
@@ -95,7 +96,7 @@ class DataManager:
     def get_all_amenities(self):
         return self.amenity_repository.get_all()
 
-        # Methods for Country
+    # Methods for Country
     def save_country(self, country_data):
         country = Country(**country_data)
         self.country_repository.save(country)

@@ -3,6 +3,7 @@ from datetime import datetime
 import uuid
 from model.user import User
 
+
 class TestUser(unittest.TestCase):
 
     def setUp(self):
@@ -41,13 +42,10 @@ class TestUser(unittest.TestCase):
 
     def test_update_user_data(self):
         """Test updating user data."""
-        new_data = {
-            'username': 'newusername',
-            'email': 'newemail@example.com'
-        }
+        new_data = {"username": "newusername", "email": "newemail@example.com"}
         self.user.update_user_data(new_data)
-        self.assertEqual(self.user.username, 'newusername')
-        self.assertEqual(self.user.email, 'newemail@example.com')
+        self.assertEqual(self.user.username, "newusername")
+        self.assertEqual(self.user.email, "newemail@example.com")
         self.assertLessEqual(self.user.updated_at, datetime.now())
 
     def test_check_password(self):
@@ -58,14 +56,14 @@ class TestUser(unittest.TestCase):
     def test_to_dict(self):
         """Test the to_dict method."""
         user_dict = self.user.to_dict()
-        self.assertEqual(user_dict['user_id'], self.user.user_id)
-        self.assertEqual(user_dict['username'], self.user.username)
-        self.assertEqual(user_dict['email'], self.user.email)
-        self.assertEqual(user_dict['password'], self.user.password)
-        self.assertEqual(user_dict['reviews'], self.user.reviews)
-        self.assertEqual(user_dict['created_at'], self.user.created_at)
-        self.assertEqual(user_dict['updated_at'], self.user.updated_at)
+        self.assertEqual(user_dict["user_id"], self.user.user_id)
+        self.assertEqual(user_dict["username"], self.user.username)
+        self.assertEqual(user_dict["email"], self.user.email)
+        self.assertEqual(user_dict["password"], self.user.password)
+        self.assertEqual(user_dict["reviews"], self.user.reviews)
+        self.assertEqual(user_dict["created_at"], self.user.created_at)
+        self.assertEqual(user_dict["updated_at"], self.user.updated_at)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
-

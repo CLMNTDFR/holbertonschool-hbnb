@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import uuid
 from model.city import City
 
+
 class TestCity(unittest.TestCase):
 
     def setUp(self):
@@ -25,13 +26,13 @@ class TestCity(unittest.TestCase):
     def test_to_dict(self):
         """Test the to_dict method."""
         city_dict = self.city.to_dict()
-        self.assertEqual(city_dict['city_id'], self.city.city_id)
-        self.assertEqual(city_dict['name'], self.city.name)
-        self.assertEqual(city_dict['country_id'], self.city.country_id)
-        self.assertEqual(city_dict['created_at'], self.city.created_at)
-        self.assertEqual(city_dict['updated_at'], self.city.updated_at)
-        self.assertIsInstance(city_dict['created_at'], datetime)
-        self.assertIsInstance(city_dict['updated_at'], datetime)
+        self.assertEqual(city_dict["city_id"], self.city.city_id)
+        self.assertEqual(city_dict["name"], self.city.name)
+        self.assertEqual(city_dict["country_id"], self.city.country_id)
+        self.assertEqual(city_dict["created_at"], self.city.created_at)
+        self.assertEqual(city_dict["updated_at"], self.city.updated_at)
+        self.assertIsInstance(city_dict["created_at"], datetime)
+        self.assertIsInstance(city_dict["updated_at"], datetime)
 
     def test_updated_at_changes(self):
         """Test if updated_at changes when city details are updated."""
@@ -43,7 +44,7 @@ class TestCity(unittest.TestCase):
     def test_invalid_uuid(self):
         """Test if an invalid UUID raises a ValueError."""
         with self.assertRaises(ValueError):
-            uuid.UUID('invalid_uuid', version=4)
+            uuid.UUID("invalid_uuid", version=4)
 
     def test_city_id_is_uuid(self):
         """Test if the city_id is a valid UUID."""
@@ -52,5 +53,6 @@ class TestCity(unittest.TestCase):
         except ValueError:
             self.fail("city_id is not a valid UUID")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
