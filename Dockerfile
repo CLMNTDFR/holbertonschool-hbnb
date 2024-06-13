@@ -1,20 +1,36 @@
-# Utiliser une image de base Python
-FROM python:3.8-slim
+# Utilisez l'image officielle Alpine Linux avec Python 3.9
+FROM python:3.9-alpine
 
-# Définir le répertoire de travail dans le conteneur
-WORKDIR /app
+# Définir les variables d'environnement
+ENV PYTHONUNBUFFERED=1 \
+    APP_HOME=/app
 
-# Copier les fichiers requirements.txt dans le répertoire de travail
-COPY requirements.txt .
+# Créer le répertoire de travail
+WORKDIR $APP_HOME
 
 # Installer les dépendances
-RUN pip install --no-cache-dir -r requirements.txt
+RUN apk update && apk add --no-cache \
+    build-base \
+    libffi-dev \
+    openssl-dev \
+    python3-dev \
+    postgresql-dev \
+    && pip install --upgrade pip
 
-# Copier le reste du code de l'application dans le répertoire de travail
+# Copier requirements.txt
+COPY requirements.txt .
+
+# Installer les dépendances Python
+RUN pip install -r requirements.txt
+
+# Copier le code de l'application
 COPY . .
 
-# Exposer le port sur lequel l'application va tourner
+# Exposer le port de l'application
 EXPOSE 5000
 
-# Commande par défaut pour lancer l'application
-CMD ["python", "app.py"]
+# Définir un volume pour la persistance des données
+VOLUME /app/data
+
+# Configurer Gunicorn comme serveur d'application
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
