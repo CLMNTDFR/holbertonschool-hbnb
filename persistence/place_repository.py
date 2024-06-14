@@ -1,42 +1,60 @@
 #!/usr/bin/python3
-# Persistence for places
 
-from datetime import datetime
-from model.place import Place
+import json
 from persistence.IPersistenceManager import IPersistenceManager
+from model.place import Place
+
 
 class PlaceRepository(IPersistenceManager):
-    """Class for managing the persistence of places."""
-    def __init__(self):
-        self.places = {}
+    def __init__(self, filename="data.json"):
+        self.filename = filename
+        self.load_data()
 
-    def save(self, place):
-        """Saves a place."""
-        place.created_at = datetime.now()
-        place.updated_at = datetime.now()
-        self.places[place.place_id] = place
+    def load_data(self):
+        try:
+            with open(self.filename, "r") as file:
+                self.data = json.load(file)
+        except FileNotFoundError:
+            self.data = {"places": []}
+
+    def save_data(self):
+        with open(self.filename, "w") as file:
+            for place in self.data["places"]:
+                if "created_at" in place:
+                    place["created_at"] = place["created_at"].isoformat()
+                if "updated_at" in place:
+                    place["updated_at"] = place["updated_at"].isoformat()
+            json.dump(self.data, file, indent=4)
+
+    def save(self, entity):
+        place_dict = entity.to_dict()
+        if "created_at" in place_dict:
+            place_dict["created_at"] = place_dict["created_at"].isoformat()
+        if "updated_at" in place_dict:
+            place_dict["updated_at"] = place_dict["updated_at"].isoformat()
+        self.data["places"].append(place_dict)
+        self.save_data()
 
     def get(self, place_id):
-        """Fetches a place."""
-        return self.places.get(place_id)
+        for place in self.data["places"]:
+            if place["place_id"] == place_id:
+                return Place(**place)
+        return None
 
-    def get_all(self):
-        """Fetches all places."""
-        return list(self.places.values())
-
-    def update(self, place_id, new_place_data):
-        """Updates an existing place."""
-        if place_id in self.places:
-            place = self.places[place_id]
-            place.update_place_data(new_place_data)
-            place.updated_at = datetime.now()
-            self.save(place)
-            return True
+    def update(self, place_id, new_data):
+        for place in self.data["places"]:
+            if place["place_id"] == place_id:
+                place.update(new_data)
+                self.save_data()
+                return True
         return False
 
     def delete(self, place_id):
-        """Deletes an existing place."""
-        if place_id in self.places:
-            del self.places[place_id]
-            return True
-        return False
+        self.data["places"] = [
+            place for place in self.data["places"] if place["place_id"] != place_id
+        ]
+        self.save_data()
+        return True
+
+    def get_all(self):
+        return [Place(**place) for place in self.data["places"]]

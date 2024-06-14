@@ -1,43 +1,63 @@
 #!/usr/bin/python3
-# Persistence for reviews
+# Persistence for review
 
-from datetime import datetime
-from model.review import Review
+import json
 from persistence.IPersistenceManager import IPersistenceManager
+from model.review import Review
+
 
 class ReviewRepository(IPersistenceManager):
-    """Class for managing the persistence of reviews."""
-    def __init__(self):
-        self.reviews = {}
+    def __init__(self, filename="data.json"):
+        self.filename = filename
+        self.load_data()
 
-    def save(self, review):
-        """Saves a review."""
-        review.created_at = datetime.now()
-        review.updated_at = datetime.now()
-        self.reviews[review.review_id] = review
+    def load_data(self):
+        try:
+            with open(self.filename, "r") as file:
+                self.data = json.load(file)
+        except FileNotFoundError:
+            self.data = {"reviews": []}
+
+    def save_data(self):
+        with open(self.filename, 'w') as file:
+            for review in self.data['reviews']:
+                if 'created_at' in review:
+                    review['created_at'] = review['created_at'].isoformat()
+                if 'updated_at' in review:
+                    review['updated_at'] = review['updated_at'].isoformat()
+            json.dump(self.data, file, indent=4)
+
+    def save(self, entity):
+        review_dict = entity.to_dict()
+        if 'created_at' in review_dict:
+            review_dict['created_at'] = review_dict['created_at'].isoformat()
+        if 'updated_at' in review_dict:
+            review_dict['updated_at'] = review_dict['updated_at'].isoformat()
+        self.data['reviews'].append(review_dict)
+        self.save_data()
 
     def get(self, review_id):
-        """Fetches a review."""
-        return self.reviews.get(review_id)
+        for review in self.data["reviews"]:
+            if review["review_id"] == review_id:
+                return Review(**review)
+        return None
 
-    def get_all(self):
-        """Fetches all reviews."""
-        return list(self.reviews.values())
-
-    def update(self, review_id, new_review_data):
-        """Updates an existing review."""
-        if review_id in self.reviews:
-            review = self.reviews[review_id]
-            for key, value in new_review_data.items():
-                setattr(review, key, value)
-            review.updated_at = datetime.now()
-            self.save(review)
-            return True
+    def update(self, review_id, new_data):
+        for review in self.data["reviews"]:
+            if review["review_id"] == review_id:
+                review.update(new_data)
+                self.save_data()
+                return True
         return False
 
     def delete(self, review_id):
-        """Deletes an existing review."""
-        if review_id in self.reviews:
-            del self.reviews[review_id]
-            return True
-        return False
+        self.data["reviews"] = [
+            review
+            for review in self.data["reviews"]
+            if review["review_id"] != review_id
+        ]
+        self.save_data()
+        return True
+
+    def get_all(self):
+        return [Review(**review) for review in self.data["reviews"]]

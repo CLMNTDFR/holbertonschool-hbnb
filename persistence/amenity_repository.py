@@ -1,43 +1,63 @@
 #!/usr/bin/python3
 # Persistence for amenities
 
-from datetime import datetime
-from model.amenity import Amenity
+import json
 from persistence.IPersistenceManager import IPersistenceManager
+from model.amenity import Amenity
+
 
 class AmenityRepository(IPersistenceManager):
-    """Class for managing the persistence of amenities."""
-    def __init__(self):
-        self.amenities = {}
+    def __init__(self, filename="data.json"):
+        self.filename = filename
+        self.load_data()
 
-    def save(self, amenity):
-        """Saves an amenity."""
-        amenity.created_at = datetime.now()
-        amenity.updated_at = datetime.now()
-        self.amenities[amenity.amenity_id] = amenity
+    def load_data(self):
+        try:
+            with open(self.filename, "r") as file:
+                self.data = json.load(file)
+        except FileNotFoundError:
+            self.data = {"amenities": []}
+
+    def save_data(self):
+        with open(self.filename, 'w') as file:
+            for country in self.data['countries']:
+                if 'created_at' in country:
+                    country['created_at'] = country['created_at'].isoformat()
+                if 'updated_at' in country:
+                    country['updated_at'] = country['updated_at'].isoformat()
+            json.dump(self.data, file, indent=4)
+
+    def save(self, entity):
+        country_dict = entity.to_dict()
+        if 'created_at' in country_dict:
+            country_dict['created_at'] = country_dict['created_at'].isoformat()
+        if 'updated_at' in country_dict:
+            country_dict['updated_at'] = country_dict['updated_at'].isoformat()
+        self.data['countries'].append(country_dict)
+        self.save_data()
 
     def get(self, amenity_id):
-        """Fetches an amenity."""
-        return self.amenities.get(amenity_id)
+        for amenity in self.data["amenities"]:
+            if amenity["amenity_id"] == amenity_id:
+                return Amenity(**amenity)
+        return None
 
-    def get_all(self):
-        """Fetches all amenities."""
-        return list(self.amenities.values())
-
-    def update(self, amenity_id, new_amenity_data):
-        """Updates an existing amenity."""
-        if amenity_id in self.amenities:
-            amenity = self.amenities[amenity_id]
-            for key, value in new_amenity_data.items():
-                setattr(amenity, key, value)
-            amenity.updated_at = datetime.now()
-            self.save(amenity)
-            return True
+    def update(self, amenity_id, new_data):
+        for amenity in self.data["amenities"]:
+            if amenity["amenity_id"] == amenity_id:
+                amenity.update(new_data)
+                self.save_data()
+                return True
         return False
 
     def delete(self, amenity_id):
-        """Deletes an existing amenity."""
-        if amenity_id in self.amenities:
-            del self.amenities[amenity_id]
-            return True
-        return False
+        self.data["amenities"] = [
+            amenity
+            for amenity in self.data["amenities"]
+            if amenity["amenity_id"] != amenity_id
+        ]
+        self.save_data()
+        return True
+
+    def get_all(self):
+        return [Amenity(**amenity) for amenity in self.data["amenities"]]

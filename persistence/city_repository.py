@@ -1,43 +1,61 @@
 #!/usr/bin/python3
 # Persistence for cities
 
-from datetime import datetime
-from model.city import City
+import json
 from persistence.IPersistenceManager import IPersistenceManager
+from model.city import City
+
 
 class CityRepository(IPersistenceManager):
-    """Class for managing the persistence of cities."""
-    def __init__(self):
-        self.cities = {}
+    def __init__(self, filename="data.json"):
+        self.filename = filename
+        self.load_data()
 
-    def save(self, city):
-        """Saves a city."""
-        city.created_at = datetime.now()
-        city.updated_at = datetime.now()
-        self.cities[city.city_id] = city
+    def load_data(self):
+        try:
+            with open(self.filename, "r") as file:
+                self.data = json.load(file)
+        except FileNotFoundError:
+            self.data = {"cities": []}
+
+    def save_data(self):
+        with open(self.filename, 'w') as file:
+            for city in self.data['cities']:
+                if 'created_at' in city:
+                    city['created_at'] = city['created_at'].isoformat()
+                if 'updated_at' in city:
+                    city['updated_at'] = city['updated_at'].isoformat()
+            json.dump(self.data, file, indent=4)
+
+    def save(self, entity):
+        city_dict = entity.to_dict()
+        if 'created_at' in city_dict:
+            city_dict['created_at'] = city_dict['created_at'].isoformat()
+        if 'updated_at' in city_dict:
+            city_dict['updated_at'] = city_dict['updated_at'].isoformat()
+        self.data['cities'].append(city_dict)
+        self.save_data()
 
     def get(self, city_id):
-        """Fetches a city."""
-        return self.cities.get(city_id)
+        for city in self.data["cities"]:
+            if city["city_id"] == city_id:
+                return City(**city)
+        return None
 
-    def get_all(self):
-        """Fetches all cities."""
-        return list(self.cities.values())
-
-    def update(self, city_id, new_city_data):
-        """Updates an existing city."""
-        if city_id in self.cities:
-            city = self.cities[city_id]
-            for key, value in new_city_data.items():
-                setattr(city, key, value)
-            city.updated_at = datetime.now()
-            self.save(city)
-            return True
+    def update(self, city_id, new_data):
+        for city in self.data["cities"]:
+            if city["city_id"] == city_id:
+                city.update(new_data)
+                self.save_data()
+                return True
         return False
 
     def delete(self, city_id):
-        """Deletes an existing city."""
-        if city_id in self.cities:
-            del self.cities[city_id]
-            return True
-        return False
+        self.data["cities"] = [
+            city for city in self.data["cities"] if city["city_id"] != city_id
+        ]
+        self.save_data()
+        return True
+
+    def get_all(self):
+        return [City(**city) for city in self.data["cities"]]

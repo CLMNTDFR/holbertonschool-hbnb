@@ -1,42 +1,60 @@
 #!/usr/bin/python3
-# Persistence for users
 
-from datetime import datetime
-from model.user import User
+import json
 from persistence.IPersistenceManager import IPersistenceManager
+from model.user import User
+
 
 class UserRepository(IPersistenceManager):
-    """Class for managing the persistence of users."""
-    def __init__(self):
-        self.users = {}
+    def __init__(self, filename="data.json"):
+        self.filename = filename
+        self.load_data()
 
-    def save(self, user):
-        """Saves a user."""
-        user.created_at = datetime.now()
-        user.updated_at = datetime.now()
-        self.users[user.user_id] = user
+    def load_data(self):
+        try:
+            with open(self.filename, "r") as file:
+                self.data = json.load(file)
+        except FileNotFoundError:
+            self.data = {"users": []}
+
+    def save_data(self):
+        with open(self.filename, "w") as file:
+            for user in self.data["users"]:
+                if "created_at" in user:
+                    user["created_at"] = user["created_at"].isoformat()
+                if "updated_at" in user:
+                    user["updated_at"] = user["updated_at"].isoformat()
+            json.dump(self.data, file, indent=4)
+
+    def save(self, entity):
+        user_dict = entity.to_dict()
+        if "created_at" in user_dict:
+            user_dict["created_at"] = user_dict["created_at"].isoformat()
+        if "updated_at" in user_dict:
+            user_dict["updated_at"] = user_dict["updated_at"].isoformat()
+        self.data["users"].append(user_dict)
+        self.save_data()
 
     def get(self, user_id):
-        """Fetches a user."""
-        return self.users.get(user_id)
+        for user in self.data["users"]:
+            if user["user_id"] == user_id:
+                return User(**user)
+        return None
 
-    def get_all(self):
-        """Fetches all users."""
-        return list(self.users.values())
-
-    def update(self, user_id, new_user_data):
-        """Updates an existing user."""
-        if user_id in self.users:
-            user = self.users[user_id]
-            user.update_user_data(new_user_data)
-            user.updated_at = datetime.now()
-            self.save(user)
-            return True
+    def update(self, user_id, new_data):
+        for user in self.data["users"]:
+            if user["user_id"] == user_id:
+                user.update(new_data)
+                self.save_data()
+                return True
         return False
 
     def delete(self, user_id):
-        """Deletes an existing user."""
-        if user_id in self.users:
-            del self.users[user_id]
-            return True
-        return False
+        self.data["users"] = [
+            user for user in self.data["users"] if user["user_id"] != user_id
+        ]
+        self.save_data()
+        return True
+
+    def get_all(self):
+        return [User(**user) for user in self.data["users"]]
