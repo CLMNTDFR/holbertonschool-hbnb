@@ -47,18 +47,15 @@ Here is a UML diagram representing the core entities and their relationships:
 
 **Entities**:
 
-- **Place**
-  - Attributes: id, name, description, address, city_id, latitude, longitude, host_id, number_of_rooms, number_of_bathrooms, price_per_night, max_guests, amenities, reviews, created_at, updated_at
-- **User**
-  - Attributes: id, email, password, first_name, last_name, created_at, updated_at
-- **Review**
-  - Attributes: id, place_id, user_id, rating, comment, created_at, updated_at
-- **Amenity**
-  - Attributes: id, name, created_at, updated_at
-- **Country**
-  - Attributes: code, name
-- **City**
-  - Attributes: id, name, country_code, created_at, updated_at
+| **Class** | **Attributes** |
+|-----------|----------------|
+| **Place** | `id`, `name`, `description`, `address`, `city_id`, `latitude`, `longitude`, `host_id`, `number_of_rooms`, `number_of_bathrooms`, `price_per_night`, `max_guests`, `amenities`, `reviews`, `created_at`, `updated_at` |
+| **User**  | `id`, `email`, `password`, `first_name`, `last_name`, `created_at`, `updated_at` |
+| **Review**| `id`, `place_id`, `user_id`, `rating`, `comment`, `created_at`, `updated_at` |
+| **Amenity**| `id`, `name`, `created_at`, `updated_at` |
+| **Country**| `name` |
+| **City**  | `id`, `name`, `country_code`, `created_at`, `updated_at` |
+
 
 ## Installation instruction
 
@@ -82,73 +79,77 @@ cd holbertonschool-hbnb
 ```
 python3 -m venv venv
 source venv/bin/activate
-
 ```
 ## Dockerization
 
-To containerize the application:
+To containerize the application using Docker Compose:
 
-1. Build the Docker image:
-```
-docker build -t hbnb-evolution .
-
-```
-
-2. Build and start the Docker containers:
-
+1. Build and start the Docker containers:
 ```
 docker-compose up --build
-
 ```
-3. Open your browser and navigate to http://localhost:5000/ or http://0.0.0.0:5000/ to access the API graphical interface.
+
+2. Open your browser and navigate to http://localhost:5000/ or http://0.0.0.0:5000/ to access the API graphical interface.
+
+## Environment Configuration
+
+- `Ubuntu` (22.04 LTS): Linux distribution
+- `Docker` (26.1.3): Containerization platform
+- `Gunicorn` (20.1.0): Python WSGI HTTP Server for Unix
+- `Flask` (2.0.2): Micro web framework for Python
+- `Flask-RESTful`: Extension for building REST APIs with Flask
+- `Flask-RESTx` (0.5.1): Extension for adding swagger to Flask APIs
+- `Flask-SQLAlchemy`: Flask extension for SQLAlchemy integration
+- `Werkzeug` (2.0.2): WSGI utility library for Python
+- `pytest` (6.2.4): Framework for running Python tests
 
 ## API Endpoints
 
 ### User Management
-. POST /users: Create a new user.
-. GET /users: Retrieve a list of all users.
-. GET /users/{user_id}: Retrieve details of a specific user.
-. PUT /users/{user_id}: Update an existing user.
-. DELETE /users/{user_id}: Delete a user.
+- **POST** `/users`: Create a new user.
+- **GET** `/users`: Retrieve a list of all users.
+- **GET** `/users/{user_id}`: Retrieve details of a specific user.
+- **PUT** `/users/{user_id}`: Update an existing user.
+- **DELETE** `/users/{user_id}`: Delete a user.
 
 ### Country and City Management
-. GET /countries: Retrieve all pre-loaded countries.
-. GET /countries/{country_code}: Retrieve details of a specific country.
-. GET /countries/{country_code}/cities: Retrieve all cities in a specific country.
-. POST /cities: Create a new city.
-. GET /cities: Retrieve all cities.
-. GET /cities/{city_id}: Retrieve details of a specific city.
-. PUT /cities/{city_id}: Update an existing city.
-. DELETE /cities/{city_id}: Delete a specific city.
+- **GET** `/countries`: Retrieve all pre-loaded countries.
+- **GET** `/countries/{country_code}`: Retrieve details of a specific country.
+- **GET** `/countries/{country_code}/cities`: Retrieve all cities in a specific country.
+- **POST** `/cities`: Create a new city.
+- **GET** `/cities`: Retrieve all cities.
+- **GET** `/cities/{city_id}`: Retrieve details of a specific city.
+- **PUT** `/cities/{city_id}`: Update an existing city.
+- **DELETE** `/cities/{city_id}`: Delete a specific city.
 
 ### Amenity Management
-. POST /amenities: Create a new amenity.
-. GET /amenities: Retrieve a list of all amenities.
-. GET /amenities/{amenity_id}: Retrieve detailed information about a specific amenity.
-. PUT /amenities/{amenity_id}: Update an existing amenity.
-. DELETE /amenities/{amenity_id}: Delete a specific amenity.
+- **POST** `/amenities`: Create a new amenity.
+- **GET** `/amenities`: Retrieve a list of all amenities.
+- **GET** `/amenities/{amenity_id}`: Retrieve detailed information about a specific amenity.
+- **PUT** `/amenities/{amenity_id}`: Update an existing amenity.
+- **DELETE** `/amenities/{amenity_id}`: Delete a specific amenity.
 
 ### Place Management
-. POST /places: Create a new place.
-. GET /places: Retrieve a list of all places.
-. GET /places/{place_id}: Retrieve detailed information about a specific place.
-. PUT /places/{place_id}: Update an existing place.
-. DELETE /places/{place_id}: Delete a specific place.
+- **POST** `/places`: Create a new place.
+- **GET** `/places`: Retrieve a list of all places.
+- **GET** `/places/{place_id}`: Retrieve detailed information about a specific place.
+- **PUT** `/places/{place_id}`: Update an existing place.
+- **DELETE** `/places/{place_id}`: Delete a specific place.
 
 ### Review Management
-. POST /places/{place_id}/reviews: Create a new review for a specified place.
-. GET /users/{user_id}/reviews: Retrieve all reviews written by a specific user.
-. GET /places/{place_id}/reviews: Retrieve all reviews for a specific place.
-. GET /reviews/{review_id}: Retrieve detailed information about a specific review.
-. PUT /reviews/{review_id}: Update an existing review.
-. DELETE /reviews/{review_id}: Delete a specific review.
+- **POST** `/places/{place_id}/reviews`: Create a new review for a specified place.
+- **GET** `/users/{user_id}/reviews`: Retrieve all reviews written by a specific user.
+- **GET** `/places/{place_id}/reviews`: Retrieve all reviews for a specific place.
+- **GET** `/reviews/{review_id}`: Retrieve detailed information about a specific review.
+- **PUT** `/reviews/{review_id}`: Update an existing review.
+- **DELETE** `/reviews/{review_id}`: Delete a specific review.
+
 
 ## Testing
 
 To run the unit tests, use the following command:
 ```
 python3 -m unittest discover -s tests
-
 ```
 ## Currently, we have 72 tests passing
 ```
@@ -188,6 +189,11 @@ python3 -m unittest discover -s tests
             </tr>
         </thead>
         <tbody>
+        <tr>
+                <td><code>run.py</code></td>
+                        <td>entry point for executing your Flask application, initializing the app and starting the server to listen for incoming requests</td>
+                </td>
+            </tr>
             <tr>
                 <td>app/</td>
                 <td>
@@ -204,18 +210,25 @@ python3 -m unittest discover -s tests
                         <td> directory contains various test files that verify different aspects of the application</td>
                 </td>
             </tr>
-            <!-- Add more rows for other root-level files if needed -->
             <tr>
-                <td>README.md</td>
+                <td><code>README.md</code></td>
                 <td>Documentation about the project, including setup instructions and usage.</td>
             </tr>
             <tr>
-                <td>Dockerfile</td>
+                <td><code>Dockerfile</code></td>
                 <td>Defines the Docker image configuration, specifying the environment setup and dependencies.</td>
             </tr>
             <tr>
-                <td>docker-compose.yml</td>
+                <td><code>docker-compose.yml</code></td>
                 <td>Defines the Docker services for the application, including the web server and database.</td>
+            </tr>
+            <tr>
+                <td><code>requirements.txt</code></td>
+                <td>Lists all the necessary Python packages and their specific versions required to run your project</td>
+            </tr>
+            <tr>
+                <td><code>data.json</code></td>
+                <td>File contains sample data that is used to populate your application's database</td>
             </tr>
             <!-- Add more rows as needed -->
         </tbody>
@@ -224,9 +237,9 @@ python3 -m unittest discover -s tests
 </html>
 
 ### Contributing
-Delphine Hannon [Delphine-H](https://github.com/Delphine-H)
-Clement Defer [CLMNTDFR](https://github.com/CLMNTDFR)
-Stephanie Carvalho [Stefani-web](https://github.com/Stefani-web)
+- Delphine Hannon [Delphine-H](https://github.com/Delphine-H)
+- Clément Defer [CLMNTDFR](https://github.com/CLMNTDFR)
+- Stephanie Carvalho [Stefani-web](https://github.com/Stefani-web)
 
 ### License
 Distributed under the MIT License. See LICENSE for more information.
