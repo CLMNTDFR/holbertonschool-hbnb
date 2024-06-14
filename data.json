@@ -1,0 +1,32 @@
+{
+    "Review": {
+        "1a2dc389-b288-4fc6-b853-e834753719b9": {
+            "id": "1a2dc389-b288-4fc6-b853-e834753719b9",
+            "user_id": "123",
+            "place_id": "456",
+            "rating": 5,
+            "comment": "Great place!",
+            "created_at": "2024-06-14T09:32:51.511873",
+            "updated_at": "2024-06-14T09:32:51.511909"
+        },
+        "a9553a92-6431-4606-a41d-94b2196c2451": {
+            "id": "a9553a92-6431-4606-a41d-94b2196c2451",
+            "user_id": "123",
+            "place_id": "456",
+            "rating": 5,
+            "comment": "Great place!",
+            "created_at": "2024-06-14T09:32:51.520329",
+            "updated_at": "2024-06-14T09:32:51.520364"
+        },
+        "4984255c-1a41-4358-a9d0-be1cc03bab29": {
+            "id": "4984255c-1a41-4358-a9d0-be1cc03bab29",
+            "user_id": "123",
+            "place_id": "456",
+            "rating": 5,
+            "comment": "Updated comment",
+            "created_at": "2024-06-14T09:32:51.522418",
+            "updated_at": "2024-06-14T09:32:51.523821"
+        }
+    },
+    "User": {}
+}

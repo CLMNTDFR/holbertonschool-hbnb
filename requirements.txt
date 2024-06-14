@@ -1,5 +1,9 @@
-Flask==2.0.1
-flask-restx==0.5.1
+Flask
+Flask-RESTful
+Flask-SQLAlchemy
+pytest
+Flask==2.0.2
 gunicorn==20.1.0
-werkzeug==2.0.1
+werkzeug==2.0.2
 pytest==6.2.4
+flask-restx==0.5.1
