@@ -4,8 +4,19 @@ import json
 from app.models.place import Place
 from app.persistence.data_manager import DataManager
 
+
 class PlaceModelTestCase(unittest.TestCase):
+    """
+    Unit tests for the Place model.
+    """
+
     def setUp(self):
+        """
+        Set up test environment:
+        - Initialize DataManager instance.
+        - Set up a test file path.
+        - Create a Place instance with test data.
+        """
         self.data_manager = DataManager()
         self.test_file = self.data_manager.file_path
         self.place = Place(
@@ -19,20 +30,30 @@ class PlaceModelTestCase(unittest.TestCase):
             num_rooms=3,
             num_bathrooms=2,
             price_per_night=100.0,
-            max_guests=4
+            max_guests=4,
         )
 
     def tearDown(self):
+        """
+        Clean up after each test:
+        - Remove the test file if it exists.
+        """
         if os.path.exists(self.test_file):
             os.remove(self.test_file)
 
     def test_save_and_get_place(self):
+        """
+        Test case for saving and retrieving a Place object.
+        """
         self.place.save()
         retrieved_place = Place.get(self.place.id)
         self.assertIsNotNone(retrieved_place)
         self.assertEqual(retrieved_place.name, self.place.name)
 
     def test_update_place(self):
+        """
+        Test case for updating a Place object.
+        """
         self.place.save()
         self.place.name = "Updated Place"
         self.place.save()
@@ -40,12 +61,18 @@ class PlaceModelTestCase(unittest.TestCase):
         self.assertEqual(retrieved_place.name, "Updated Place")
 
     def test_delete_place(self):
+        """
+        Test case for deleting a Place object.
+        """
         self.place.save()
         self.place.delete()
         retrieved_place = Place.get(self.place.id)
         self.assertIsNone(retrieved_place)
 
     def test_get_all_places(self):
+        """
+        Test case for retrieving all places.
+        """
         self.place.save()
         another_place = Place(
             name="Another Place",
@@ -58,11 +85,12 @@ class PlaceModelTestCase(unittest.TestCase):
             num_rooms=2,
             num_bathrooms=1,
             price_per_night=80.0,
-            max_guests=2
+            max_guests=2,
         )
         another_place.save()
         places = Place.get_all()
         self.assertEqual(len(places), 2)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
