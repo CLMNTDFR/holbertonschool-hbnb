@@ -67,7 +67,6 @@ Python Scripts:
 - Python scripts must be written to run with Python 3.8.5 on Ubuntu 20.04 LTS, using python3 (version 3.8.*)
 - Windows 11 WSL 2 2.1.5
 - The code must follow the PEP 8 style (pycodestyle version 2.7.*).
-- All files must be executable and file length will be tested with wc.
 ```
 
 
