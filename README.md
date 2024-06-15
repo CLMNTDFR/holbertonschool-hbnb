@@ -11,11 +11,11 @@ This project is inspired by AirBnB and aims to create a web application using Py
 - [Overview](#overview)
 - [Project Structure](#project-structure)
 - [UML Diagram](#uml-diagram)
-- [Installation](#installation)
-- [Usage](#usage)
+- [Installation Instructions](#installation)
+- [Dockerization](#dockerization)
+- [Environment-configuration](#environment-configuration)
 - [API Endpoints](#api-endpoints)
 - [Testing](#testing)
-- [Dockerization](#dockerization)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -57,11 +57,11 @@ Here is a UML diagram representing the core entities and their relationships:
 | **City**  | `id`, `name`, `country_code`, `created_at`, `updated_at` |
 
 
-## Installation instruction
+## installation instructions
 
 ```
 Python Scripts:
-- Python scripts must be written to run with Python 3.8.5 on Ubuntu 20.04 LTS, using python3 (version 3.8.*)
+- Python scripts must be written to run with Python 3.8.5 on Ubuntu 22.04 LTS, using python3 (version 3.8.*)
 - Windows 11 WSL 2 2.1.5
 - The code must follow the PEP 8 style (pycodestyle version 2.7.*).
 ```
