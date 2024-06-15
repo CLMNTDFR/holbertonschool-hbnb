@@ -11,7 +11,7 @@ This project is inspired by AirBnB and aims to create a web application using Py
 - [Overview](#overview)
 - [Project Structure](#project-structure)
 - [UML Diagram](#uml-diagram)
-- [Installation Instructions](#installation)
+- [Installation Instructions](#installation-instructions)
 - [Dockerization](#dockerization)
 - [Environment-configuration](#environment-configuration)
 - [API Endpoints](#api-endpoints)
