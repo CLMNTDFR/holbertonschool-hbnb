@@ -157,21 +157,6 @@ python3 -m unittest discover -s tests
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Repository Files and Descriptions</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #DDDDDD;
-            text-align: left;
-        }
-        th {
-            background-color: #F2F2F2;
-        }
-    </style>
 </head>
 <body>
     <h1>Repository Files and Descriptions</h1>
