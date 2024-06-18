@@ -43,7 +43,7 @@ Key entities in our data model include Places, Users, Reviews, Amenities, Countr
 
 Here is a UML diagram representing the core entities and their relationships:
 
-<img src ="https://cdn.discordapp.com/attachments/1217825406699180052/1251200281975324743/UML_classes_diagram.png?ex=666db691&is=666c6511&hm=1ebf4809d645f6b329e2229c2a2ca5149d61d4a0800e2e15a18e8ca18a9937ca&">
+<img src ="https://i.postimg.cc/9QFTxTYP/UML-Classes-Hbnb-13-06.png">
 
 **Entities**:
 
