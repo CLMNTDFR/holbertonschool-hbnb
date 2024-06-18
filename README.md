@@ -66,7 +66,6 @@ Python Scripts:
 - The code must follow the PEP 8 style (pycodestyle version 2.7.*).
 ```
 
-
 1. Clone the repository:
 
 ```bash
@@ -74,12 +73,6 @@ git clone git@github.com:CLMNTDFR/holbertonschool-hbnb.git
 cd holbertonschool-hbnb
 ```
 
-2. Create a virtual environment and activate it:
-
-```
-python3 -m venv venv
-source venv/bin/activate
-```
 ## Dockerization
 
 To containerize the application using Docker Compose:
